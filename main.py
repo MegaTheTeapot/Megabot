@@ -1,10 +1,12 @@
 
-version = "0.1.1_development"
+version_ = "0.1.1_development"
 import requests
 
 response = requests.get("https://api.github.com/repos/mega145/Megabot/releases/latest",headers={"owner":"mega145","repo":"Megabot"})
+out_of_date = None
 try:
-    if response.json()["name"] != version:
+    newest = response.json()["name"]
+    if response.json()["name"] != version_:
         out_of_date = True
         newest = response.json()["name"]
 except Exception:
@@ -74,8 +76,11 @@ for cog in track(config['cogs'],description="Loading Cogs"):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send('Please pass in all requirements :rolling_eyes:.')
-    if isinstance(error, commands.MissingPermissions):
+    elif isinstance(error, commands.MissingPermissions):
         await ctx.send("You dont have all the requirements :angry:")
+    else:
+        await ctx.send(error)
+    
 
 @client.event
 async def on_ready():
@@ -102,13 +107,14 @@ async def cogs(ctx):
 
 @client.command(aliases=['ver', 'v', 'V'])
 async def version(ctx):
+    title = f"Version: {version_} and the newest version is {newest}"
     ver_msg = discord.Embed(
-        title=f'Version: {version}',
-        desc=f'I assume that you there, are a programmer or a or just a cheeky nerd who is interested in me (type "{config["prefix"]}abt" to know more about me and even access my github page)',
+        title=title,
+        description=f'I assume that you there, are a programmer or a or just a cheeky nerd who is interested in me (type "{config["prefix"]}abt" to know more about me and even access my github page)',
         footer="made by Dis-Code#0288",
         colour=discord.Colour.random()
     )
-    await ctx.send(ver_msg)
+    await ctx.send(embed=ver_msg)
 
 # scrapped idea 
 '''
