@@ -81,7 +81,7 @@ async def on_ready():
     if out_of_date:
         log.warning(f"The version you are using is [red]Out of date[/]\nthe [blue on red]newest[/] version is [green]{newest}[/]")
 
-@client.command()
+@client.command(aliases=["c","cog"])
 async def cogs(ctx):
     embed=discord.Embed(title="Cog", description="status", color=discord.Color.random())
     for cog in config['cogs']:
