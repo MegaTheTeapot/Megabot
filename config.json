@@ -2,6 +2,7 @@
     "token" : "Your_token_here",
     "prefix" : ".",
     "cogs" : {
-        "test" : true
+        "test" : true,
+        "embed" : true
     }
 }

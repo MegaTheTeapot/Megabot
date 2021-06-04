@@ -1,5 +1,5 @@
 
-version = "1.0.0_development"
+version = "0.1.0_development"
 import requests
 
 response = requests.get("https://api.github.com/repos/mega145/Megabot/releases/latest",headers={"owner":"mega145","repo":"Megabot"})
@@ -102,6 +102,26 @@ async def version(ctx):
     )
     await ctx.send(ver_msg)
 
+@client.command()
+async def reload(ctx):
+    
+    for cog in cogs:
+        client.unload_extension(cog)
+    
+    for cog in track(config['cogs'],description="Reloading Cogs"):
+        if config['cogs'][cog]:
+            cogs.append(f"cogs.{cog}")
+        else:
+            continue
+    total = 0
+    for cog in cogs:
+        try:
+            client.load_extension(cog)
+            # print(f"sucessfully loaded {cog}")
+            total += 1
+        except Exception as error:
+            log.warning(f"Failed to load {cog}")
+    print(f"all cogs loaded! ({total})")
 
 try:
     client.run(config["token"])
