@@ -1,5 +1,5 @@
 {
-    "token" : "Your token in config.json",
+    "token" : "Your_token_here",
     "prefix" : ".",
     "cogs" : {
         "test" : true
