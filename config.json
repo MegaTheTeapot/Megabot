@@ -1,6 +1,7 @@
 {
     "token" : "Your_token_here",
     "prefix" : ".",
+    "info_channel" : 828958529825275936,
     "cogs" : {
         "test" : true,
         "embed" : true

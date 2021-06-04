@@ -1,5 +1,5 @@
 
-version = "0.1.0_development"
+version = "0.1.1_development"
 import requests
 
 response = requests.get("https://api.github.com/repos/mega145/Megabot/releases/latest",headers={"owner":"mega145","repo":"Megabot"})
@@ -70,6 +70,12 @@ for cog in track(config['cogs'],description="Loading Cogs"):
             log.warning(f"Failed to load {cog}")
     print(f"all cogs loaded! ({total})")
 
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Please pass in all requirements :rolling_eyes:.')
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("You dont have all the requirements :angry:")
 
 @client.event
 async def on_ready():
@@ -80,6 +86,8 @@ async def on_ready():
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{len(client.guilds)} servers"))
     if out_of_date:
         log.warning(f"The version you are using is [red]Out of date[/]\nthe [blue on red]newest[/] version is [green]{newest}[/]")
+    AwakenChannel = client.get_channel(config["info_channel"])
+    await AwakenChannel.send("Bot is now online")
 
 @client.command(aliases=["c","cog"])
 async def cogs(ctx):
@@ -102,6 +110,8 @@ async def version(ctx):
     )
     await ctx.send(ver_msg)
 
+# scrapped idea 
+'''
 @client.command()
 async def reload(ctx):
     
@@ -122,6 +132,7 @@ async def reload(ctx):
         except Exception as error:
             log.warning(f"Failed to load {cog}")
     print(f"all cogs loaded! ({total})")
+'''
 
 try:
     client.run(config["token"])

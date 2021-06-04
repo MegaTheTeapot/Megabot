@@ -23,7 +23,12 @@ log = logging.getLogger("rich")
 class Ping(commands.Cog):
     def __init__(self,client):
         self.client = client
-
+    
+    # permissions test
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def test(ctx, member : discord.Member, *, reason = None):
+        pass
     @commands.command(description="Used to check bot's ping")
     async def ping(self, ctx):
         try:

@@ -28,6 +28,7 @@ class Embed(commands.Cog):
         )
         hyper_link.set_footer(text=f"requested by {ctx.message.author}")
         await ctx.send(embed=hyper_link)
+        await ctx.message.delete()
  
 def setup(client):
     client.add_cog(Embed(client))
