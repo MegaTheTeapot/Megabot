@@ -1,10 +1,15 @@
 
-version = "0.0.0_development"
+version = "1.0.0_development"
 import requests
 
-response = requests.get("https://api.github.com/repos/v2ray/v2ray-core/releases/latest")
-print(response.json()["name"])
-
+response = requests.get("https://api.github.com/repos/mega145/Megabot/releases/latest",headers={"owner":"mega145","repo":"Megabot"})
+try:
+    if response.json()["name"] != version:
+        out_of_date = True
+        newest = response.json()["name"]
+except Exception:
+    out_of_date = True
+    newest = None
 
 
 from os import name
@@ -43,6 +48,11 @@ config = open('./config.json')
 config = json.load(config)
 log.debug( f"Config: {config}" )
 
+try:
+    config = open('./config_dev.json')
+    config = json.load(config)
+except Exception:
+    pass
 print(banner)
 
 for cog in track(config['cogs'],description="Loading Cogs"):
@@ -68,7 +78,8 @@ async def on_ready():
     con.rule("")
     print(f"\n[purple]{client.user}[/] [red]Ready![/]\nWith [green]{round(client.latency * 1000)}ms[/] of [red]ping[/]\nIm in [green]{len(client.guilds)}[/] [purple]servers[/]")
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{len(client.guilds)} servers"))
-    len(client.guilds)
+    if out_of_date:
+        log.warning(f"The version you are using is [red]Out of date[/]\nthe [blue on red]newest[/] version is [green]{newest}[/]")
 
 @client.command()
 async def cogs(ctx):
